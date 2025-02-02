@@ -1,5 +1,4 @@
-import { ethers } from "hardhat"
-import { expect, loadFixture } from "./setup";
+import { ethers, expect, loadFixture } from "./setup";
 
 describe("Vault", async function() {
     async function deploy() {
@@ -34,8 +33,6 @@ describe("Vault", async function() {
 
     it("should not donate", async function() {
         const { user2, contract} = await loadFixture(deploy);
-
-        const zeroAddress = ethers.ZeroAddress;//я не очень сообразил как с помощью ether(нашел решение через openzepelin) создать пустой аккаунт, чтобы протестировать 15 строчку контракта
 
         await expect(contract.connect(user2).donate()).to.be.revertedWith("value is empty")
     })

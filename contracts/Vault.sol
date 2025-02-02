@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable} from  "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Vault is Ownable { //https://sepolia.etherscan.io/address/0x66E30cB61d0BDC337524D3bc41e52418d729286C
 
@@ -12,7 +12,6 @@ contract Vault is Ownable { //https://sepolia.etherscan.io/address/0x66E30cB61d0
     constructor() Ownable(msg.sender) {}
 
     function donate() external payable {
-        require(msg.sender != address(0), "account empty");
         require(msg.value != 0, "value is empty");
         registry[msg.sender] = msg.value;
 
@@ -26,7 +25,6 @@ contract Vault is Ownable { //https://sepolia.etherscan.io/address/0x66E30cB61d0
     function refund() external payable{
         address payable to_account = payable(msg.sender);
 
-        require(to_account != address(0), "account empty");
         require(registry[to_account] != 0, "accout is not donated");
 
         to_account.transfer(registry[to_account]);
