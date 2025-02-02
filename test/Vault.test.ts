@@ -34,7 +34,7 @@ describe("Vault", async function() {
     it("should not donate", async function() {
         const { user2, contract} = await loadFixture(deploy);
 
-        await expect(contract.connect(user2).donate()).to.be.revertedWith("value is empty")
+        await expect(contract.connect(user2).donate()).to.be.revertedWithCustomError(contract, "EmptyValueException")
     })
 
     it("should return money to sender", async function () {
@@ -51,6 +51,7 @@ describe("Vault", async function() {
         const acountBalanceTx = await contract.connect(user2).getBalance()
 
         expect(acountBalanceTx).to.eq(sum)
+        
         //вызываем функцию refand() ожидаем возврат денег
         const refundTx = await contract.connect(user2).refund()
 
@@ -65,7 +66,7 @@ describe("Vault", async function() {
 
         //попытка еще раз списать деньги - должна провалиться
 
-        await expect(contract.connect(user2).refund()).to.be.revertedWith('accout is not donated');
+        await expect(contract.connect(user2).refund()).to.be.revertedWithCustomError(contract, "AccountIsNotDonated")
     })
 
     it("should withdraw money to owner", async function() {
